@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+issueTrackerURL="https://github.com/Mrbysco/WeightedInventory/issues"
+license="MIT"
+
+[[mods]]
+modId="weightedinventory"
+version="${file.jarVersion}"
+displayName="Weighted Inventory"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/weighted-inventory"
+authors="Mrbysco"
+description='''
+Unlock inventory slots based on your worn armor
+'''
+
+[[dependencies.weightedinventory]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20,1.21)"
+ordering="NONE"
+side="BOTH"

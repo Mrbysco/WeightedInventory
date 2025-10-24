@@ -1,0 +1,4 @@
+{
+  "weightedinventory.message.item_dropped": "Item dropped, too heavy!",
+  "weightedinventory.tooltip.slot_count": "+%s Inventory Slots"
+}
