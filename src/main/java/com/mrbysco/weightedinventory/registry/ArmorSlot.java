@@ -5,19 +5,21 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.mrbysco.weightedinventory.WeightedInventoryMod;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.conditions.ConditionalOps;
+import net.neoforged.neoforge.common.conditions.WithConditions;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 public final class ArmorSlot {
 	public static final ResourceKey<Registry<ArmorSlot>> REGISTRY_KEY = ResourceKey.createRegistryKey(
-			new ResourceLocation(WeightedInventoryMod.MOD_ID, "armor_slot"));
+			WeightedInventoryMod.modLoc("armor_slot"));
 
 	public static final Codec<ArmorSlot> DIRECT_CODEC = ExtraCodecs.catchDecoderException(
 			RecordCodecBuilder.create(
@@ -28,6 +30,8 @@ public final class ArmorSlot {
 							.apply(apply, ArmorSlot::new)
 			)
 	);
+	public static final Codec<Optional<WithConditions<ArmorSlot>>> CONDITIONAL_CODEC = ConditionalOps.createConditionalCodecWithConditions(DIRECT_CODEC);
+
 	private final List<ResourceLocation> armorIds;
 	private final List<Holder.Reference<Item>> armorItems;
 	private final float slotsPerPiece;
@@ -39,11 +43,11 @@ public final class ArmorSlot {
 	}
 
 	public ArmorSlot(List<ResourceLocation> armorIds, float slotsPerPiece) {
-		this(armorIds, armorIds.stream().map(ForgeRegistries.ITEMS::getValue).filter(Objects::nonNull).map(Item::builtInRegistryHolder).toList(), slotsPerPiece);
+		this(armorIds, armorIds.stream().map(BuiltInRegistries.ITEM::getHolder).filter(Optional::isPresent).map(Optional::get).toList(), slotsPerPiece);
 	}
 
 	public static ArmorSlot createSlot(List<Holder.Reference<Item>> armorItems, float slotsPerPiece) {
-		return new ArmorSlot(armorItems.stream().map(test -> test.key().location()).toList(), slotsPerPiece);
+		return new ArmorSlot(armorItems.stream().map(reference -> reference.key().location()).toList(), slotsPerPiece);
 	}
 
 	public List<ResourceLocation> armorIds() {
@@ -77,16 +81,5 @@ public final class ArmorSlot {
 		return "ArmorSlot[" +
 				"armorItems=" + armorIds + ", " +
 				"slotsPerPiece=" + slotsPerPiece + ']';
-	}
-
-	public void serializeToNetwork(FriendlyByteBuf byteBuf) {
-		byteBuf.writeCollection(this.armorIds, FriendlyByteBuf::writeResourceLocation);
-		byteBuf.writeFloat(this.slotsPerPiece);
-	}
-
-	public static ArmorSlot fromNetwork(FriendlyByteBuf byteBuf) {
-		List<ResourceLocation> armorIds = byteBuf.readList(FriendlyByteBuf::readResourceLocation);
-		float slotsPerPiece = byteBuf.readFloat();
-		return new ArmorSlot(armorIds, slotsPerPiece);
 	}
 }

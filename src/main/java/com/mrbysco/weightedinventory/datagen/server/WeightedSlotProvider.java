@@ -3,13 +3,11 @@ package com.mrbysco.weightedinventory.datagen.server;
 import com.mrbysco.weightedinventory.WeightedInventoryMod;
 import com.mrbysco.weightedinventory.datagen.provider.ArmorSlotBuilder;
 import com.mrbysco.weightedinventory.datagen.provider.ArmorSlotProvider;
-import com.mrbysco.weightedinventory.datagen.provider.WrappedSlot;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Items;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public class WeightedSlotProvider extends ArmorSlotProvider {
 
@@ -18,23 +16,23 @@ public class WeightedSlotProvider extends ArmorSlotProvider {
 	}
 
 	@Override
-	public void defineSlots(Consumer<WrappedSlot> consumer) {
-		this.addSlot(consumer, "leather", new ArmorSlotBuilder()
+	public void defineSlots(HolderLookup.Provider registries) {
+		this.addSlot("leather", new ArmorSlotBuilder()
 				.setArmorItems(Items.LEATHER_BOOTS, Items.LEATHER_LEGGINGS, Items.LEATHER_CHESTPLATE, Items.LEATHER_HELMET)
 				.setSlotsPerPiece(2.25f));
-		this.addSlot(consumer, "iron", new ArmorSlotBuilder()
+		this.addSlot("iron", new ArmorSlotBuilder()
 				.setArmorItems(Items.IRON_BOOTS, Items.IRON_LEGGINGS, Items.IRON_CHESTPLATE, Items.IRON_HELMET)
 				.setSlotsPerPiece(4.5f));
-		this.addSlot(consumer, "chainmail", new ArmorSlotBuilder()
+		this.addSlot("chainmail", new ArmorSlotBuilder()
 				.setArmorItems(Items.CHAINMAIL_BOOTS, Items.CHAINMAIL_LEGGINGS, Items.CHAINMAIL_CHESTPLATE, Items.CHAINMAIL_HELMET)
 				.setSlotsPerPiece(4.5f));
-		this.addSlot(consumer, "gold", new ArmorSlotBuilder()
+		this.addSlot("gold", new ArmorSlotBuilder()
 				.setArmorItems(Items.GOLDEN_BOOTS, Items.GOLDEN_LEGGINGS, Items.GOLDEN_CHESTPLATE, Items.GOLDEN_HELMET)
 				.setSlotsPerPiece(6.75f));
-		this.addSlot(consumer, "diamond", new ArmorSlotBuilder()
+		this.addSlot("diamond", new ArmorSlotBuilder()
 				.setArmorItems(Items.DIAMOND_BOOTS, Items.DIAMOND_LEGGINGS, Items.DIAMOND_CHESTPLATE, Items.DIAMOND_HELMET)
 				.setSlotsPerPiece(6.75f));
-		this.addSlot(consumer, "netherite", new ArmorSlotBuilder()
+		this.addSlot("netherite", new ArmorSlotBuilder()
 				.setArmorItems(Items.NETHERITE_BOOTS, Items.NETHERITE_LEGGINGS, Items.NETHERITE_CHESTPLATE, Items.NETHERITE_HELMET)
 				.setSlotsPerPiece(6.75f));
 	}

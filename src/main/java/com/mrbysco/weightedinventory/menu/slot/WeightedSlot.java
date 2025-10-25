@@ -47,6 +47,6 @@ public class WeightedSlot extends Slot {
 		if (this.isUnlocked) {
 			return null;
 		}
-		return Pair.of(InventoryMenu.BLOCK_ATLAS, new ResourceLocation(WeightedInventoryMod.MOD_ID, "item/locked_slot"));
+		return Pair.of(InventoryMenu.BLOCK_ATLAS, WeightedInventoryMod.modLoc("item/locked_slot"));
 	}
 }

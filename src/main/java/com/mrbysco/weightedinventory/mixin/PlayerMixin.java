@@ -30,7 +30,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
 	@Shadow
 	@Final
-	private Inventory inventory;
+	Inventory inventory;
 
 	protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
 		super(entityType, level);
