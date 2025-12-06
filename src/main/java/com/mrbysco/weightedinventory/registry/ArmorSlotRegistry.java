@@ -39,16 +39,6 @@ public class ArmorSlotRegistry {
 				ArmorSlot.DIRECT_CODEC, ArmorSlot.DIRECT_CODEC);
 	}
 
-//	public static void onTagsUpdated(OnDatapackSyncEvent event) {
-//		final RegistryAccess registryAccess = event.getPlayerList().getServer().registryAccess();
-//
-//		itemSlotCache.clear();
-//		armorSlotMap.clear();
-//		final Registry<ArmorSlot> armorSlotRegistry = registryAccess.registryOrThrow(ArmorSlot.REGISTRY_KEY);
-//		armorSlotRegistry.entrySet().forEach((key) -> armorSlotMap.put(key.getKey().location(), key.getValue()));
-//		WeightedInventoryMod.LOGGER.info("Loaded Armor Slot: {} places", armorSlotMap.size());
-//	}
-
 	public static void updateMap(Map<ResourceLocation, ArmorSlot> newMap) {
 		armorSlotMap.clear();
 		itemSlotCache.clear();
