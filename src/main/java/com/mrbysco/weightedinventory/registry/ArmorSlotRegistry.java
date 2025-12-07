@@ -1,6 +1,7 @@
 package com.mrbysco.weightedinventory.registry;
 
 import com.mrbysco.weightedinventory.config.WeightedConfig;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +23,7 @@ public class ArmorSlotRegistry {
 			return itemSlotCache.get(stack.getItem());
 		}
 		for (ArmorSlot armorSlot : armorSlotMap.values()) {
-			for (var armorItem : armorSlot.armorItems()) {
+			for (Holder.Reference<Item> armorItem : armorSlot.armorItems()) {
 				if (stack.getItem().builtInRegistryHolder().equals(armorItem)) {
 					float slots = armorSlot.slotsPerPiece();
 					itemSlotCache.put(stack.getItem(), slots);
@@ -35,8 +36,7 @@ public class ArmorSlotRegistry {
 
 	@SubscribeEvent
 	public static void onNewRegistry(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(ArmorSlot.REGISTRY_KEY,
-				ArmorSlot.DIRECT_CODEC, ArmorSlot.DIRECT_CODEC);
+		event.dataPackRegistry(ArmorSlot.REGISTRY_KEY, ArmorSlot.DIRECT_CODEC, ArmorSlot.DIRECT_CODEC);
 	}
 
 	public static void updateMap(Map<ResourceLocation, ArmorSlot> newMap) {
