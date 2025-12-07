@@ -7,6 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 
@@ -29,6 +30,10 @@ public class AttributeHandler {
 	public static void addItemAttributes(ItemAttributeModifierEvent event) {
 		ItemStack armorStack = event.getItemStack();
 		EquipmentSlot slot = UnlockHelper.getEquipmentSlotForItem(armorStack);
+		ItemAttributeModifiers defaultModifiers = event.getDefaultModifiers();
+		if (defaultModifiers.modifiers().stream().anyMatch(entry -> entry.attribute().is(ArmorAttributeRegistry.UNLOCKED.getKey()))) {
+			return;
+		}
 		if (slot != null && slot != EquipmentSlot.OFFHAND && slot != EquipmentSlot.MAINHAND) {
 			float slots = ArmorSlotRegistry.getSlots(armorStack);
 			EquipmentSlotGroup equipmentslotgroup = EquipmentSlotGroup.bySlot(slot);
