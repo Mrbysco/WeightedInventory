@@ -1,10 +1,10 @@
 {
+  "attribute.name.unlocked.slot_count": "Inventory Slots",
   "weightedinventory.configuration.defaultSlotCount": "Default Slot Count",
   "weightedinventory.configuration.defaultSlotCount.tooltip": "The amount of slots given by armor that has not been setup with a slot count",
   "weightedinventory.configuration.disableInCreative": "Disable in Creative",
   "weightedinventory.configuration.disableInCreative.tooltip": "Disable weighted inventory in creative mode",
   "weightedinventory.configuration.general": "General",
   "weightedinventory.configuration.general.tooltip": "General Settings",
-  "weightedinventory.message.item_dropped": "Item dropped, too heavy!",
-  "weightedinventory.tooltip.slot_count": "+%s Inventory Slots"
+  "weightedinventory.message.item_dropped": "Item dropped, too heavy!"
 }
