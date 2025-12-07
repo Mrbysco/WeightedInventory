@@ -1,1 +1,2 @@
-* Update to 1.21.1
+* Fix the datapack slot counts not being read
+* Use attributes for the items
