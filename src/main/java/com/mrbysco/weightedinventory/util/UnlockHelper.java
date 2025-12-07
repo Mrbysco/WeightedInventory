@@ -1,13 +1,23 @@
 package com.mrbysco.weightedinventory.util;
 
+import com.mrbysco.weightedinventory.WeightedInventoryMod;
 import com.mrbysco.weightedinventory.config.WeightedConfig;
-import com.mrbysco.weightedinventory.registry.ArmorSlotRegistry;
+import com.mrbysco.weightedinventory.registry.ArmorAttributeRegistry;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Locale;
+
 public class UnlockHelper {
+	public static final ResourceLocation BASE_UNLOCKED_ID = WeightedInventoryMod.modLoc("base_unlocked");
+
 	/**
 	 * Check if a slot index is unlocked based on the number of unlocked slots
 	 *
@@ -33,12 +43,11 @@ public class UnlockHelper {
 		if (WeightedConfig.COMMON.disableInCreative.getAsBoolean() && player.isCreative()) {
 			return 27;
 		}
-		float slots = 0f;
-		for (ItemStack armorStack : player.getArmorSlots()) {
-			if (armorStack.isEmpty()) continue;
-			slots += ArmorSlotRegistry.getSlots(armorStack);
+		AttributeInstance modifier = player.getAttribute(ArmorAttributeRegistry.UNLOCKED);
+		if (modifier != null) {
+			return Mth.clamp(Mth.floor(modifier.getValue()), 0, 27);
 		}
-		return Mth.clamp(Mth.floor(slots), 0, 27);
+		return 0;
 	}
 
 	/**
@@ -60,5 +69,38 @@ public class UnlockHelper {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * Create an AttributeModifier for unlocked slots
+	 *
+	 * @param slots The number of slots to unlock
+	 * @return The AttributeModifier
+	 */
+	public static AttributeModifier createModifier(EquipmentSlot slot, float slots) {
+		return new AttributeModifier(
+				BASE_UNLOCKED_ID.withSuffix("_" + slot.getName().toLowerCase(Locale.ROOT)),
+				slots, AttributeModifier.Operation.ADD_VALUE
+		);
+	}
+
+	/**
+	 * Get the equipment slot for the given item stack.
+	 *
+	 * @param stack The item stack to check.
+	 * @return The equipment slot.
+	 */
+	public static EquipmentSlot getEquipmentSlotForItem(ItemStack stack) {
+		EquipmentSlot slot = stack.getEquipmentSlot();
+		if (slot != null) {
+			return slot;
+		} else {
+			Equipable equipable = Equipable.get(stack);
+			if (equipable != null) {
+				return equipable.getEquipmentSlot();
+			}
+
+			return EquipmentSlot.MAINHAND;
+		}
 	}
 }

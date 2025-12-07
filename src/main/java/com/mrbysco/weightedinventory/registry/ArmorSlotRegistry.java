@@ -2,6 +2,7 @@ package com.mrbysco.weightedinventory.registry;
 
 import com.mrbysco.weightedinventory.WeightedInventoryMod;
 import com.mrbysco.weightedinventory.config.WeightedConfig;
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.registries.DataPackRegistryEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("removal")
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public class ArmorSlotRegistry {
 	private static final Map<Item, Float> itemSlotCache = new HashMap<>();
@@ -26,8 +28,8 @@ public class ArmorSlotRegistry {
 			return itemSlotCache.get(stack.getItem());
 		}
 		for (ArmorSlot armorSlot : armorSlotMap.values()) {
-			for (var armorItem : armorSlot.armorItems()) {
-				if (stack.getItem().builtInRegistryHolder().equals(armorItem)) {
+			for (Holder.Reference<Item> armorItem : armorSlot.armorItems()) {
+				if (armorItem.is(stack.getItem().builtInRegistryHolder())) {
 					float slots = armorSlot.slotsPerPiece();
 					itemSlotCache.put(stack.getItem(), slots);
 					return slots;
@@ -39,8 +41,7 @@ public class ArmorSlotRegistry {
 
 	@SubscribeEvent
 	public static void onNewRegistry(DataPackRegistryEvent.NewRegistry event) {
-		event.dataPackRegistry(ArmorSlot.REGISTRY_KEY,
-				ArmorSlot.DIRECT_CODEC, ArmorSlot.DIRECT_CODEC);
+		event.dataPackRegistry(ArmorSlot.REGISTRY_KEY, ArmorSlot.DIRECT_CODEC, ArmorSlot.DIRECT_CODEC);
 	}
 
 	public static void onTagsUpdated(OnDatapackSyncEvent event) {
@@ -48,14 +49,8 @@ public class ArmorSlotRegistry {
 
 		itemSlotCache.clear();
 		armorSlotMap.clear();
-		final Registry<ArmorSlot> armorSlotRegistry = registryAccess.registryOrThrow(ArmorSlot.REGISTRY_KEY);
-		armorSlotRegistry.entrySet().forEach((key) -> armorSlotMap.put(key.getKey().location(), key.getValue()));
-		WeightedInventoryMod.LOGGER.info("Loaded Armor Slot: {} places", armorSlotMap.size());
-	}
-
-	public static void updateMap(Map<ResourceLocation, ArmorSlot> newMap) {
-		armorSlotMap.clear();
-		itemSlotCache.clear();
-		armorSlotMap.putAll(newMap);
+		final Registry<ArmorSlot> biomePlaceRegistry = registryAccess.registryOrThrow(ArmorSlot.REGISTRY_KEY);
+		biomePlaceRegistry.entrySet().forEach((key) -> armorSlotMap.put(key.getKey().location(), key.getValue()));
+		WeightedInventoryMod.LOGGER.info("Loaded unlocked armor slots: {} ", armorSlotMap.size());
 	}
 }

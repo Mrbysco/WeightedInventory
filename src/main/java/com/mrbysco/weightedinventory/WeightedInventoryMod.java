@@ -2,6 +2,8 @@ package com.mrbysco.weightedinventory;
 
 import com.mojang.logging.LogUtils;
 import com.mrbysco.weightedinventory.config.WeightedConfig;
+import com.mrbysco.weightedinventory.handler.AttributeHandler;
+import com.mrbysco.weightedinventory.registry.ArmorAttributeRegistry;
 import com.mrbysco.weightedinventory.registry.ArmorSlotRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -19,9 +21,13 @@ public class WeightedInventoryMod {
 	public static final String MOD_ID = "weightedinventory";
 	public static final Logger LOGGER = LogUtils.getLogger();
 
+
 	public WeightedInventoryMod(IEventBus eventBus, ModContainer container, Dist dist) {
 		container.registerConfig(ModConfig.Type.COMMON, WeightedConfig.commonSpec);
 
+		ArmorAttributeRegistry.ATTRIBUTES.register(eventBus);
+		eventBus.addListener(AttributeHandler::addEntityAttributes);
+		NeoForge.EVENT_BUS.addListener(AttributeHandler::addItemAttributes);
 		NeoForge.EVENT_BUS.addListener(ArmorSlotRegistry::onTagsUpdated);
 
 		if (dist.isClient()) {
