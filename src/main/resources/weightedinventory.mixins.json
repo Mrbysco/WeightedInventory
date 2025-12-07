@@ -6,6 +6,7 @@
   "refmap": "weightedinventory.refmap.json",
   "target": "@env(DEFAULT)",
   "mixins": [
-    "PlayerMixin"
+    "AbstractContainerMenuMixin",
+    "InventoryMixin"
   ]
 }
