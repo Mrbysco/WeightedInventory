@@ -1,10 +1,13 @@
 package com.mrbysco.weightedinventory.handler;
 
+import com.google.common.collect.Multimap;
 import com.mrbysco.weightedinventory.registry.ArmorAttributeRegistry;
 import com.mrbysco.weightedinventory.registry.ArmorSlotRegistry;
 import com.mrbysco.weightedinventory.util.UnlockHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.ItemAttributeModifierEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -28,7 +31,11 @@ public class AttributeHandler {
 	public static void addItemAttributes(ItemAttributeModifierEvent event) {
 		ItemStack armorStack = event.getItemStack();
 		EquipmentSlot slot = UnlockHelper.getEquipmentSlotForItem(armorStack);
-		if (slot != null && slot != EquipmentSlot.OFFHAND && slot != EquipmentSlot.MAINHAND) {
+		Multimap<Attribute, AttributeModifier> originalModifiers = event.getOriginalModifiers();
+		if (originalModifiers.containsKey(ArmorAttributeRegistry.UNLOCKED.get())) {
+			return;
+		}
+		if (slot != null && slot == event.getSlotType() && slot != EquipmentSlot.MAINHAND && slot != EquipmentSlot.OFFHAND) {
 			float slots = ArmorSlotRegistry.getSlots(armorStack);
 			event.addModifier(ArmorAttributeRegistry.UNLOCKED.get(), UnlockHelper.createModifier(slot, slots));
 		}
