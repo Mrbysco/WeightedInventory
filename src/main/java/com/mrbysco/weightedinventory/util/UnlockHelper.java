@@ -7,6 +7,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class UnlockHelper {
+	/**
+	 * Check if a slot index is unlocked based on the number of unlocked slots
+	 *
+	 * @param index         The slot index
+	 * @param unlockedSlots The number of unlocked slots
+	 * @return True if the slot is unlocked, false otherwise
+	 */
 	public static boolean isUnlocked(int index, int unlockedSlots) {
 		if (unlockedSlots > 0) {
 			return (index - 9) < unlockedSlots;
@@ -15,6 +22,12 @@ public class UnlockHelper {
 		}
 	}
 
+	/**
+	 * Get the number of unlocked slots for a player based on their armor
+	 *
+	 * @param player The player
+	 * @return The number of unlocked slots
+	 */
 	public static int getUnlockedSlots(Player player) {
 		float slots = 0f;
 		for (ItemStack armorStack : player.getArmorSlots()) {
@@ -24,6 +37,13 @@ public class UnlockHelper {
 		return Mth.clamp(Mth.floor(slots), 0, 26);
 	}
 
+	/**
+	 * Get the first unlocked free slot in the inventory
+	 *
+	 * @param player The player
+	 * @param items  The inventory items
+	 * @return The index of the first unlocked free slot, or -1 if none are available
+	 */
 	public static int getUnlockedFreeSlot(Player player, NonNullList<ItemStack> items) {
 		int unlockedCount = UnlockHelper.getUnlockedSlots(player) + 9;
 		int slots = Mth.clamp(unlockedCount, 0, items.size());
