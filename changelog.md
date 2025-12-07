@@ -1,1 +1,1 @@
-* Fix the inventory slots not looking locked when inside a block inventory
+* Use an Attribute instead of hardcoding the slots for armor items
