@@ -11,7 +11,7 @@ public class WeightedLanguageProvider extends LanguageProvider {
 
 	@Override
 	protected void addTranslations() {
-		this.add("weightedinventory.tooltip.slot_count", "+%s Inventory Slots");
+		this.add("attribute.name.unlocked.slot_count", "Inventory Slots");
 		this.add("weightedinventory.message.item_dropped", "Item dropped, too heavy!");
 	}
 }
