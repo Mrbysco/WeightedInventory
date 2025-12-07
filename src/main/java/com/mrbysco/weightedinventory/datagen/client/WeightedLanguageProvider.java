@@ -18,6 +18,12 @@ public class WeightedLanguageProvider extends LanguageProvider {
 		this.addConfig("general", "General", "General Settings");
 		this.addConfig("defaultSlotCount", "Default Slot Count", "The amount of slots given by armor that has not been setup with a slot count");
 		this.addConfig("disableInCreative", "Disable in Creative", "Disable weighted inventory in creative mode");
+
+		this.addConfig("unlock", "Unlock", "Unlock Settings");
+		this.addConfig("defaultUnlockedSlots", "Default Unlocked Slots", "The amount of unlocked slots given to players by default");
+		this.addConfig("allowOffhandLock", "Lock Offhand Slot", "Allow locking of the offhand slot");
+		this.addConfig("allowArmorLock", "Lock Armor Slots", "Allow locking of the armor slots");
+
 	}
 
 	/**

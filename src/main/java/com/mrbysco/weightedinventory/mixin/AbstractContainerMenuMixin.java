@@ -1,6 +1,7 @@
 package com.mrbysco.weightedinventory.mixin;
 
 import com.mrbysco.weightedinventory.menu.slot.WeightedSlot;
+import com.mrbysco.weightedinventory.util.UnlockHelper;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -35,7 +36,7 @@ public abstract class AbstractContainerMenuMixin {
 	public void weightedinventory$addSlot(Slot slot, CallbackInfoReturnable<Slot> cir) {
 		if (slot.container instanceof Inventory inventory) {
 			int slotIndex = slot.getSlotIndex();
-			if (slotIndex >= 9 && slotIndex < 36) {
+			if (UnlockHelper.isIndexLockable(slotIndex)) {
 				WeightedSlot weightedSlot = new WeightedSlot(inventory, slotIndex, slot.x, slot.y);
 				weightedSlot.index = this.slots.size();
 				this.slots.add(weightedSlot);

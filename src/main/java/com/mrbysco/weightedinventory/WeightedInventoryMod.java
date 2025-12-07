@@ -27,6 +27,7 @@ public class WeightedInventoryMod {
 
 		ArmorAttributeRegistry.ATTRIBUTES.register(eventBus);
 		eventBus.addListener(AttributeHandler::addEntityAttributes);
+		NeoForge.EVENT_BUS.addListener(AttributeHandler::onEntityJoin);
 		NeoForge.EVENT_BUS.addListener(AttributeHandler::addItemAttributes);
 		NeoForge.EVENT_BUS.addListener(ArmorSlotRegistry::onTagsUpdated);
 

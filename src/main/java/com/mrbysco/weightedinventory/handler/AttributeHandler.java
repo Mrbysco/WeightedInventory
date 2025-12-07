@@ -1,15 +1,19 @@
 package com.mrbysco.weightedinventory.handler;
 
+import com.mrbysco.weightedinventory.config.WeightedConfig;
 import com.mrbysco.weightedinventory.registry.ArmorAttributeRegistry;
 import com.mrbysco.weightedinventory.registry.ArmorSlotRegistry;
 import com.mrbysco.weightedinventory.util.UnlockHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 
 public class AttributeHandler {
 
@@ -19,7 +23,16 @@ public class AttributeHandler {
 	 * @param event The entity attribute modification event
 	 */
 	public static void addEntityAttributes(EntityAttributeModificationEvent event) {
-		event.add(EntityType.PLAYER, ArmorAttributeRegistry.UNLOCKED, 0.0D);
+		event.add(EntityType.PLAYER, ArmorAttributeRegistry.UNLOCKED, 0);
+	}
+
+	public static void onEntityJoin(EntityJoinLevelEvent event) {
+		if (event.getEntity() instanceof Player player) {
+			AttributeInstance instance = player.getAttribute(ArmorAttributeRegistry.UNLOCKED);
+			if (instance != null) {
+				instance.setBaseValue(WeightedConfig.COMMON.defaultUnlockedSlots.getAsInt());
+			}
+		}
 	}
 
 	/**

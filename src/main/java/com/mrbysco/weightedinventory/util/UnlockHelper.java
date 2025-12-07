@@ -9,14 +9,27 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.Locale;
 
 public class UnlockHelper {
-	public static final ResourceLocation BASE_UNLOCKED_ID = WeightedInventoryMod.modLoc("base_unlocked");
+	private static final int[] ARMOR_SLOTS = new int[]{36, 37, 38, 39};
+	private static final ResourceLocation BASE_UNLOCKED_ID = WeightedInventoryMod.modLoc("base_unlocked");
+
+	public static boolean isIndexLockable(int index) {
+		if (WeightedConfig.COMMON.allowOffhandLock.getAsBoolean() && index == Inventory.SLOT_OFFHAND) {
+			return true;
+		}
+		if (WeightedConfig.COMMON.allowArmorLock.getAsBoolean() && ArrayUtils.contains(ARMOR_SLOTS, index)) {
+			return true;
+		}
+		return index >= 1 && index < 36;
+	}
 
 	/**
 	 * Check if a slot index is unlocked based on the number of unlocked slots
@@ -27,7 +40,7 @@ public class UnlockHelper {
 	 */
 	public static boolean isUnlocked(int index, int unlockedSlots) {
 		if (unlockedSlots > 0) {
-			return (index - 9) < unlockedSlots;
+			return index < unlockedSlots;
 		} else {
 			return false;
 		}
@@ -58,7 +71,7 @@ public class UnlockHelper {
 	 * @return The index of the first unlocked free slot, or -1 if none are available
 	 */
 	public static int getUnlockedFreeSlot(Player player, NonNullList<ItemStack> items) {
-		int unlockedCount = UnlockHelper.getUnlockedSlots(player) + 9;
+		int unlockedCount = UnlockHelper.getUnlockedSlots(player);
 		int slots = Mth.clamp(unlockedCount, 0, items.size());
 		if (slots == 0) {
 			return -1; // Should never happen, but just in case
