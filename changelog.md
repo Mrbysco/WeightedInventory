@@ -1,1 +1,1 @@
-* Initial version
+* Fix the inventory slots not looking locked when inside a block inventory
