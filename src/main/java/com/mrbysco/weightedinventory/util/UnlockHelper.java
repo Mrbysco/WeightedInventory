@@ -1,5 +1,6 @@
 package com.mrbysco.weightedinventory.util;
 
+import com.mrbysco.weightedinventory.config.WeightedConfig;
 import com.mrbysco.weightedinventory.registry.ArmorSlotRegistry;
 import net.minecraft.core.NonNullList;
 import net.minecraft.util.Mth;
@@ -29,12 +30,15 @@ public class UnlockHelper {
 	 * @return The number of unlocked slots
 	 */
 	public static int getUnlockedSlots(Player player) {
+		if (WeightedConfig.COMMON.disableInCreative.getAsBoolean() && player.isCreative()) {
+			return 27;
+		}
 		float slots = 0f;
 		for (ItemStack armorStack : player.getArmorSlots()) {
 			if (armorStack.isEmpty()) continue;
 			slots += ArmorSlotRegistry.getSlots(armorStack);
 		}
-		return Mth.clamp(Mth.floor(slots), 0, 26);
+		return Mth.clamp(Mth.floor(slots), 0, 27);
 	}
 
 	/**
