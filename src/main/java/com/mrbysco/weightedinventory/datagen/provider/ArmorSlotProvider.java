@@ -1,6 +1,7 @@
 package com.mrbysco.weightedinventory.datagen.provider;
 
 import com.google.common.collect.ImmutableList;
+import com.mrbysco.weightedinventory.WeightedInventoryMod;
 import com.mrbysco.weightedinventory.registry.ArmorSlot;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
@@ -26,7 +27,7 @@ public abstract class ArmorSlotProvider implements DataProvider {
 	private final Map<String, WithConditions<ArmorSlot>> toSerialize = new HashMap<>();
 
 	public ArmorSlotProvider(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries, String modID) {
-		this.armorSlotPathProvider = packOutput.createPathProvider(PackOutput.Target.DATA_PACK, "armor_slot");
+		this.armorSlotPathProvider = packOutput.createRegistryElementsPathProvider(ArmorSlot.REGISTRY_KEY);
 		this.registries = registries;
 		this.modID = modID;
 	}
