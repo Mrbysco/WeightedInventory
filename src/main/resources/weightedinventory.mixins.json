@@ -5,6 +5,7 @@
   "package": "com.mrbysco.weightedinventory.mixin",
   "target": "@env(DEFAULT)",
   "mixins": [
-    "PlayerMixin"
+    "AbstractContainerMenuMixin",
+    "InventoryMixin"
   ]
 }
